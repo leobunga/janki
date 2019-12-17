@@ -1,8 +1,7 @@
-# %%
 import sys
 from typing import *
-from ..common.exceptions import *
 from .config import readconfig
+from ..common.exceptions import *
 
 cfg = readconfig()
 if cfg['ANKIPATH'] not in sys.path:
