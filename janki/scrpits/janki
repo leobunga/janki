@@ -2,6 +2,7 @@
 
 # from janki import *
 from janki.janki.ui.setup import setup
+from janki.janki.ui.main  import main
 from janki.janki.common.vars import DIR
 from argparse import ArgumentParser
 import os
@@ -15,6 +16,6 @@ parser.add_argument('action', nargs='?', choices=[None, 'setup'], default=None, 
 args = parser.parse_args()
 
 if args.action == None:
-    print('Main')
+    main()
 elif args.action == 'setup':
     setup(opj(DIR, 'config'))
