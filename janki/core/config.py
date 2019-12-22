@@ -4,7 +4,7 @@ from os.path import join    as opj
 from os.path import dirname as opd
 from ..common.exceptions import ConfigError
 
-def readconfig(fpath=None):
+def readconfig(fpath=None, verbose=True):
     # Return the locals() of the executed code from `fpath`, thanks to Robert
 
     if not fpath:
@@ -17,28 +17,31 @@ def readconfig(fpath=None):
             exec_locals = {} # Store and return these locals
             code        = compile(f.read(), fpath, 'exec')
             exec(code, {}, exec_locals)
+
+            for key in ['ANKIPATH', 'COLPATH']:
+                if key not in exec_locals:
+                    raise ConfigError(f'\n\nVariable {key} not found in config.')
+
+            for path in ['ANKIPATH', 'COLPATH']:
+                if not os.path.exists(exec_locals[path]):
+                    raise ConfigError(f'\n\nThe path {path}=\'{exec_locals[path]}\' does not exist.')
+
         except Exception:
-            print('An exception occurred while reading the config:')
-            print('===============================================')
-            traceback.print_exc()
-            print('=====================================================')
-            print('This probably indicates an error in your config file.')
+            if verbose:
+                s = f'An exception occurred while reading the config in {fpath}:'
+                print(s)
+                print(len(s)*'=')
+                traceback.print_exc()
+                print(len(s)*'=')
+                print('This probably indicates an error in your config file.')
             raise ConfigError
-
-    for key in ['ANKIPATH', 'COLPATH']:
-        if key not in exec_locals:
-            raise ConfigError(f'\n\nVariable {key} not found in {fpath}\nCheck your config or run the configuration helper again.')
-
-    for path in ['ANKIPATH', 'COLPATH']:
-        if not os.path.exists(exec_locals[path]):
-            raise ConfigError(f'\n\nThe path {path}=\'{exec_locals[path]}\' does not exist.\nCheck your config ({fpath}) or run the configuration helper again.')
 
     return exec_locals
 
 
-def checkconfig(fpath):
+def checkconfig(fpath, verbose=True):
     try:
-        readconfig(fpath)
+        readconfig(fpath, verbose)
         return True
     except:
         return False
