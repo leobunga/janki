@@ -1,4 +1,5 @@
-import urllib
+import urllib.parse
+import urllib.request
 import json
 
 
@@ -54,6 +55,5 @@ def jprint(d):
             print(f'  Tags: {", ".join(tag for tag in i["tags"])}')
     print('---')
 
-# raw = jsho_search('家', False)
-# ret = jsho_search('家')
-# [jsho_pprint(i) for i in ret]
+# raw = jsearch('家', False)
+# jprint(raw[0])
