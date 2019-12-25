@@ -17,8 +17,9 @@ def readconfig(fpath=None, verbose=True):
             exec_locals = {} # Store and return these locals
             code        = compile(f.read(), fpath, 'exec')
             exec(code, {}, exec_locals)
+            exec_locals['__file__'] = fpath
 
-            for key in ['ANKIPATH', 'COLPATH']:
+            for key in ['ANKIPATH', 'COLPATH', 'FIELDS']:
                 if key not in exec_locals:
                     raise ConfigError(f'\n\nVariable {key} not found in config.')
 
