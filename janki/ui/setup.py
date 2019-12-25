@@ -21,7 +21,7 @@ def setup(configpath):
             print(f'\nConfig file found at {configpath} bit it seems to be corrupted.')
             print('Check the above message and make sure all variables are making sense.')
             print('You can also choose to overwrite the file with a template if you are lost.')
-            action = dinput('Do you want to overwrite the existing config with the template?', default='n', choices=['y','n'])
+            action = dinput('\nDo you want to overwrite the existing config with the template?', default='n', choices=['y','n'])
             if action == 'y':
                 make_config()
     else:

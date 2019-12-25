@@ -5,14 +5,14 @@ from ..common.vars import DIR, clear
 from ..core.jisho  import *
 
 
-def cp(req,id):
-    clear()
-    print(f'Search result {id+1:02d}/10')
-    jprint(req[id])
-    print('Actions: (a)dd, (n)ext, (p)revious, (q)uit')
-    return dinput('Enter action', choices=['a','n','p'])
+def search():
+    def cp(req,id):
+        clear()
+        print(f'Search result {id+1:02d}/10')
+        jprint(req[id])
+        print('Actions: (a)dd, (n)ext, (p)revious, new (s)earch, (q)uit')
+        return dinput('Enter action', choices=['a','n','p', 's'])
 
-def main():
     req = dinput('Enter search string')
     ret = jsearch(req)
     if not ret:
@@ -27,7 +27,10 @@ def main():
         else:
             id -= 1 if id != 0 else 0
             action = cp(ret, id)
+    if action == 's':
+        clear()
+        search()
     if action == 'a':
         print('Add')
     elif action == None:
-        print('Quit')
+        clear()
