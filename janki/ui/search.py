@@ -16,8 +16,9 @@ def search():
     req = dinput('Enter search string')
     ret = jsearch(req)
     if not ret:
+        clear()
         print(f'No search results for: {req}')
-        return
+        search()
     id  = 0
     action = cp(ret, id)
     while action == 'n' or action == 'p': # Next / Previous

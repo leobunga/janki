@@ -22,8 +22,9 @@ def mainscreen():
         global config
         config = readconfig(verbose=False)
         print(f"Install path:    {DIR}")
-        print(f"Config  path:    {config['__file__']}")
-        print(f"Collection path: {config['COLPATH']}\n")
+        print(f"Config path:     {config['__file__']}")
+        print(f"Collection path: {config['COLPATH']}")
+        print(f"Selected deck:   {config['DECK']}\n")
         print('Actions: (s)earch, (q)uit')
     except ConfigError:
         print("Could not read the config. Please run 'janki setup' for more help.")

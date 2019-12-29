@@ -16,7 +16,7 @@ setup(
     author_email     = 'koimssarov@scm.com',
     url              = '',
     download_url     = '',
-    license          = 'LGPLv3',
+    # license          = 'LGPLv3',
     description      = 'Quickly add Jsho.org search results to your Anki Collection',
     long_description = description,
     classifiers      = [
