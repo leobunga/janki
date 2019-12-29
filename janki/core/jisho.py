@@ -25,11 +25,12 @@ def jclean(d):
     ret   = {}
     jap   = d['japanese']
     trans = d['senses']
-    ret['Kanji'] 	= set([i['word'] if 'word' in i else '' for i in jap])
-    ret['Reading'] 	= set([i['reading']                     for i in jap])
+    ret['Kanji'] 	= set([i['word']    if 'word'    in i else '' for i in jap])
+    ret['Reading'] 	= set([i['reading'] if 'reading' in i else '' for i in jap])
     ret['Meaning'] 	= [ {k:i[k] for k in ['parts_of_speech','english_definitions', 'tags', 'antonyms', 'info']} for i in trans ]
-    ret['Common']	= d['is_common']
     ret['Tags']		= d['tags']
+    if 'is_common' in d and d['is_common']:
+        ret['Tags'].append('common')
     return ret
 
 def jprint(d):
@@ -54,6 +55,7 @@ def jprint(d):
         if i["tags"]:
             print(f'  Tags: {", ".join(tag for tag in i["tags"])}')
     print('---')
-
-# raw = jsearch('家', False)
+# %%
+# raw = jsearch('helo', False)
+# jclean(raw[4])
 # jprint(raw[0])
