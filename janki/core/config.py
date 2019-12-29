@@ -18,16 +18,8 @@ def readconfig(fpath=None, verbose=True):
             code        = compile(f.read(), fpath, 'exec')
             exec(code, {}, exec_locals)
             exec_locals['__file__'] = fpath
-
-            for key in ['ANKIPATH', 'COLPATH', 'FIELDS']:
-                if key not in exec_locals:
-                    raise ConfigError(f'\n\nVariable {key} not found in config.')
-
-            for path in ['ANKIPATH', 'COLPATH']:
-                if not os.path.exists(exec_locals[path]):
-                    raise ConfigError(f'\n\nThe path {path}=\'{exec_locals[path]}\' does not exist.')
-
-        except Exception:
+            _checks(exec_locals)
+        except:
             if verbose:
                 s = f'An exception occurred while reading the config in {fpath}:'
                 print(s)
@@ -46,3 +38,22 @@ def checkconfig(fpath, verbose=True):
         return True
     except:
         return False
+
+
+def _checks(exec_locals):
+    for key in ['ANKIPATH', 'COLPATH', 'DECK', 'FIELDS',]:
+        if key not in exec_locals:
+            raise ConfigError(f'\n\nVariable {key} not found in config.')
+
+    for path in ['ANKIPATH', 'COLPATH']:
+        if not os.path.exists(exec_locals[path]):
+            raise ConfigError(f'\n\nThe path {path}=\'{exec_locals[path]}\' does not exist.')
+
+    if exec_locals['ANKIPATH'] not in sys.path:
+        sys.path.append(cfg['ANKIPATH'])
+    import anki
+    col = anki.Collection(exec_locals['COLPATH'])
+    names = col.decks.allNames()
+    col.close()
+    if exec_locals['DECK'] not in names:
+        raise ConfigError(f'\n\nThe deck `{exec_locals["DECK"]}` does not exist.\nAvailable decks are: {", ".join(names)}')
