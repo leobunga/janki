@@ -1,8 +1,9 @@
-import os
+import os,sys
 from os.path import join as opj, abspath
 from  .userinput   import dinput
 from ..common.vars import DIR, clear
 from ..core.jisho  import *
+from ..core.deck   import DECK
 
 
 def search():
@@ -13,7 +14,10 @@ def search():
         print('Actions: (a)dd, (n)ext, (p)revious, new (s)earch, (q)uit')
         return dinput('Enter action', choices=['a','n','p', 's'])
 
-    req = dinput('Enter search string')
+    req = dinput('Enter search string (q to quit)')
+    if not req:
+        clear()
+        sys.exit()
     ret = jsearch(req)
     if not ret:
         clear()
@@ -31,7 +35,10 @@ def search():
     if action == 's':
         clear()
         search()
-    if action == 'a':
-        print('Add')
+    elif action == 'a':
+        DECK.add(ret[id])
+        clear()
+        print('Added')
+        search()
     elif action == None:
         clear()

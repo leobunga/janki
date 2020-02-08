@@ -6,10 +6,6 @@ from ..common.exceptions import *
 cfg = readconfig()
 import anki
 
-
-__all__ = ['Deck', 'get_deck_names']
-
-
 def copen(col=None):
     if col:
         if col.open:
@@ -31,7 +27,6 @@ def get_deck_names(ids=False):
     ret = (COL.decks.allNames(), COL.decks.allIds()) if ids else COL.decks.allNames()
     return ret
 
-COL  = copen()
 
 class Deck:
     def __init__(self,deck_name_or_id:Union[str, int]=None):
@@ -64,7 +59,8 @@ class Deck:
         f = self.fields()
         if len(fargs) != len(f):
             strf = ', '.join(f'"{i}"' for i in f)
-            raise NoteError(f'The number of passed arguments must be the same as the number of fields: {len(f)}, where each argument is the value of the respective field -- {strf}.')
+            print(fargs)
+            raise NoteError(f'The number of passed arguments must be the same as the number of fields: {len(f)}, where each argument is the value of the respective field.\nThis deck\'s fields are: {strf}.')
         note = COL.newNote()
         note.fields = [str(i) for i in fargs]
         if tags:
@@ -72,6 +68,44 @@ class Deck:
         note.model()['did'] = self.id
         COL.addNote(note)
         cclose(COL)
+
+    def add(self, d:Dict):
+        #  add( jsearch()[i] )
+
+        def flat_d(d:Dict):
+            # 'Flatten' the dictionary
+            ret = {k:d[k] for k in ['Kanji', 'Reading', 'Tags']}
+            ret['Translation']     = []
+            ret['Info']            = []
+            for i in d['Meaning']:
+                for k in ['Translation', 'Tags', 'Info']:
+                    if k == 'Translation' and 'Add parts of speech' in cfg['MISC'] and cfg['MISC']['Add parts of speech']:
+                        ret[k] += [f'{j} ({" ".join(i["parts_of_speech"])})' for j in i[k]]
+                    else:
+                        ret[k] += i[k]
+
+            enum = True  if 'Eumerate entries' not in cfg['MISC'] else cfg['MISC']['Enumerate entries']
+            if enum:
+                for k in ['Kanji', 'Reading', 'Translation', 'Info']:
+                    if len(ret[k]) > 1:
+                        ret[k] = [f'{num}. {i}' for num,i in enumerate(ret[k], 1)]
+            return ret
+
+        a2j = cfg['FIELDS'] # Mapping anki fields to janki fields
+        d    = flat_d(d)
+        sep  = '<br>' if 'Entry separator'  not in cfg['MISC'] else cfg['MISC']['Entry separator']
+        tags = False  if 'Add tags'         not in cfg['MISC'] else cfg['MISC']['Add tags']
+
+        field_args = [] # List of properly ordered field values for `add_note()`
+        for f in self.fields():
+            if f in a2j:
+                k   = a2j[f]
+                try:    ret = d[k]
+                except: raise NoteError(f"Janki does not understand the field '{k}'. Check your FIELDS variable in the config file")
+                field_args.append(f"{sep}".join(ret))
+            else:
+                field_args.append('')
+        self.add_note(*field_args, tags=d['Tags'] if tags else None)
 
     @staticmethod
     def close():
@@ -89,6 +123,10 @@ class Deck:
         conf.update(value)
         self.decks.setConf(conf, self._strid)
         COL.save()
+
+
+COL  = copen()
+DECK = Deck(cfg['DECK'])
 # %%
 # Testing
 # deck = Deck('Yomichan')
