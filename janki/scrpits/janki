@@ -2,7 +2,6 @@
 
 from janki.janki.common.exceptions import *
 from janki.janki.ui.setup          import setup
-from janki.janki.ui.search         import search
 from janki.janki.ui.userinput      import dinput
 from janki.janki.common.vars       import DIR, clear
 
@@ -35,6 +34,10 @@ if args.action == None:
     mainscreen()
     action = dinput('What to do?', choices=['s','q'], default='s')
     if action == 's':
+        from janki.janki.ui.search import search
         search()
+    elif not action:
+        clear()
+        sys.exit()
 elif args.action == 'setup':
     setup(opj(DIR, 'config'))

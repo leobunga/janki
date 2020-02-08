@@ -27,7 +27,9 @@ def jclean(d):
     trans = d['senses']
     ret['Kanji'] 	= set([i['word']    if 'word'    in i else '' for i in jap])
     ret['Reading'] 	= set([i['reading'] if 'reading' in i else '' for i in jap])
-    ret['Meaning'] 	= [ {k:i[k] for k in ['parts_of_speech','english_definitions', 'tags', 'antonyms', 'info']} for i in trans ]
+    ret['Meaning'] 	= [ { newk:i[k] for newk,k in zip(['parts_of_speech','Translation',         'Tags', 'antonyms', 'Info'],
+                                                      ['parts_of_speech','english_definitions', 'tags', 'antonyms', 'info'])}
+                        for i in trans ]
     ret['Tags']		= d['tags']
     if 'is_common' in d and d['is_common']:
         ret['Tags'].append('common')
@@ -47,13 +49,13 @@ def jprint(d):
     cnt = 1
     for i in d['Meaning']:
         print(', '.join(j for j in i['parts_of_speech']))
-        for j in i['english_definitions']:
+        for j in i['Translation']:
             print(f'  {cnt}. {j}')
             cnt += 1
-        if i['info']:
-            print(f'  Info: {"; ".join(ii for ii in i["info"])}')
-        if i["tags"]:
-            print(f'  Tags: {", ".join(tag for tag in i["tags"])}')
+        if i['Info']:
+            print(f'  Info: {"; ".join(ii for ii in i["Info"])}')
+        if i["Tags"]:
+            print(f'  Tags: {", ".join(tag for tag in i["Tags"])}')
     print('---')
 # %%
 # raw = jsearch('helo', False)
