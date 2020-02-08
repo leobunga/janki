@@ -62,3 +62,12 @@ def _checks(exec_locals):
     col.close()
     if exec_locals['DECK'] not in names:
         raise ConfigError(f'\n\nThe deck `{exec_locals["DECK"]}` does not exist.\nAvailable decks are: {", ".join(names)}')
+
+    col = anki.Collection(exec_locals['COLPATH'])
+    col.decks.select(col.decks.id(exec_locals["DECK"]))
+    fields = [i['name'] for i in col.models.current()['flds']]
+    col.close()
+    for k in exec_locals['FIELDS'].keys():
+        if k not in fields:
+            jstr = '\n'.join(fields)
+            raise ConfigError(f"The FIELD '{k}' is unknown to your selected deck. Available FIELDs with this deck are:\n\n{jstr}\n")

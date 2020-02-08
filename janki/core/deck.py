@@ -79,7 +79,7 @@ class Deck:
             ret['Info']            = []
             for i in d['Meaning']:
                 for k in ['Translation', 'Tags', 'Info']:
-                    if k == 'Translation' and 'Add parts of speech' in cfg['MISC'] and cfg['MISC']['Add parts of speech']:
+                    if k == 'Translation' and 'Add parts of speech' in cfg['MISC'] and cfg['MISC']['Add parts of speech'] and i["parts_of_speech"]:
                         ret[k] += [f'{j} ({" ".join(i["parts_of_speech"])})' for j in i[k]]
                     else:
                         ret[k] += i[k]
