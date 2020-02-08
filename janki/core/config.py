@@ -49,6 +49,11 @@ def _checks(exec_locals):
         if not os.path.exists(exec_locals[path]):
             raise ConfigError(f'\n\nThe path {path}=\'{exec_locals[path]}\' does not exist.')
 
+    if not os.path.exists(exec_locals['COLPATH']+'.jankibak'):
+        from shutil import copyfile
+        copyfile(exec_locals['COLPATH'], exec_locals['COLPATH']+'.jankibak')
+        print(f'A backup of your collection has been created at \'{exec_locals["COLPATH"]}.jankibak\'')
+
     if exec_locals['ANKIPATH'] not in sys.path:
         sys.path.append(cfg['ANKIPATH'])
     import anki
