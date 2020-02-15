@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-from janki.janki.common.exceptions import *
-from janki.janki.ui.setup          import setup
-from janki.janki.ui.userinput      import dinput
-from janki.janki.common.vars       import DIR, clear
+from janki import __path__ as jpath
+from janki.common.exceptions import *
+from janki.ui.setup          import setup
+from janki.ui.userinput      import dinput
+from janki.common.vars       import DIR, clear
 
 from argparse import ArgumentParser
 import os, sys
@@ -16,11 +17,11 @@ args = parser.parse_args()
 def mainscreen():
     clear()
     print(f"{16*'*'}\nWelcome to Janki \n{16*'*'}\n")
-    from janki.janki.core.config import readconfig
+    print(f"Install path:    {jpath[0]}")
+    from janki.core.config import readconfig
     try:
         global config
         config = readconfig(verbose=False)
-        print(f"Install path:    {DIR}")
         print(f"Config path:     {config['__file__']}")
         print(f"Collection path: {config['COLPATH']}")
         print(f"Selected deck:   {config['DECK']}\n")
@@ -34,7 +35,7 @@ if args.action == None:
     mainscreen()
     action = dinput('What to do?', choices=['s','q'], default='s')
     if action == 's':
-        from janki.janki.ui.search import search
+        from janki.ui.search import search
         search()
     elif not action:
         clear()

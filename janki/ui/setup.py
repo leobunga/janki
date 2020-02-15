@@ -4,7 +4,9 @@ from  .userinput   import dinput
 from ..core.config import checkconfig
 from ..common.vars import DIR
 
-TEMPLATE = """## Path to your anki folder (https://github.com/dae/anki):
+TEMPLATE = """
+## Path to your anki folder (https://github.com/dae/anki):
+# Try `find / -name anki 2> /dev/null` if you do not know your anki path
 # Note: An `anki` directory should be present at `ANKIPATH/anki`
 ANKIPATH = '/path/to/anki'
 

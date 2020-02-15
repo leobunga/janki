@@ -4,7 +4,7 @@ from os.path import join    as opj
 from os.path import dirname as opd
 from ..common.exceptions import ConfigError
 
-def readconfig(fpath=None, verbose=True):
+def readconfig(fpath=None, verbose=True, _test=False):
     # Return the locals() of the executed code from `fpath`, thanks to Robert
 
     if not fpath:
@@ -18,7 +18,8 @@ def readconfig(fpath=None, verbose=True):
             code        = compile(f.read(), fpath, 'exec')
             exec(code, {}, exec_locals)
             exec_locals['__file__'] = fpath
-            _checks(exec_locals)
+            if not _test:
+                _checks(exec_locals)
         except:
             if verbose:
                 s = f'An exception occurred while reading the config in {fpath}:'
