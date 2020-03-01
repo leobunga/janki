@@ -3,8 +3,6 @@ from os import sep
 from os.path import join as opj
 from janki import __version__
 
-# TODO ask for path to config at install
-
 packages = ['janki']+['janki.'+i for i in find_packages('janki')]
 
 description = """

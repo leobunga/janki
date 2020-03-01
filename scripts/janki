@@ -4,31 +4,35 @@ from janki import __path__ as jpath, __version__
 from janki.common.exceptions import *
 from janki.ui.setup          import setup
 from janki.ui.userinput      import dinput
-from janki.common.clear      import clear
+from janki.common.term       import *
 
 from argparse import ArgumentParser
 import os, sys
 from os.path import join as opj
 
+_def_cfgpath = opj(jpath[0], 'config')
 parser = ArgumentParser(description='Janki main script')
 parser.add_argument('action', nargs='?', choices=[None, 'setup'], default=None, help='Main janki action.')
+parser.add_argument('-c', '--config', default=_def_cfgpath, help=f'Path to the config file to use.\nDefaults to: {_def_cfgpath}')
 args = parser.parse_args()
 
 def mainscreen():
     clear()
-    print(f"{16*'*'}\nWelcome to Janki\n{16*'*'}\n")
+    print(f"{16*'*'}")
+    print(C.str('Welcome to Janki', 'BOLD'))
+    print(f"{16*'*'}\n")
     print(f"Version:         {__version__}")
     print(f"Install path:    {jpath[0]}")
     from janki.core.config import readconfig
     try:
         global config
-        config = readconfig(verbose=False)
+        config = readconfig(args.config, verbose=False)
         print(f"Config path:     {config['__file__']}")
         print(f"Collection path: {config['COLPATH']}")
         print(f"Selected deck:   {config['DECK']}\n")
         print('Actions: (s)earch, (q)uit')
     except ConfigError:
-        print("Could not read the config. Please run 'janki setup' for more help.")
+        print(C.str("\nCould not read the config. Please run 'janki setup' for more help.", 'WARNING'))
         sys.exit(1)
 
 
@@ -42,4 +46,4 @@ if args.action == None:
         clear()
         sys.exit()
 elif args.action == 'setup':
-    setup(opj(jpath[0], 'config'))
+    setup(args.config)

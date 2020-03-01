@@ -1,8 +1,9 @@
 import traceback
 import os, sys
 from os.path import join as opj
-from ..common.exceptions import ConfigError
 from ..                  import __path__ as jpath
+from ..common.exceptions import ConfigError
+from ..common.term       import C
 
 def readconfig(fpath=None, verbose=True, _test=False):
     # Return the locals() of the executed code from `fpath`, thanks to Robert

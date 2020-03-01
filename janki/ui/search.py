@@ -1,7 +1,7 @@
 import os,sys
 from os.path import join as opj, abspath
 from  .userinput    import dinput
-from ..common.clear import clear
+from ..common.term  import clear
 from ..core.jisho   import *
 from ..core.deck    import DECK
 

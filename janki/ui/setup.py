@@ -14,7 +14,7 @@ ANKIPATH = '/path/to/anki'
 COLPATH  = '/path/to/collection.anki2'
 
 ## Name or ID of the Anki deck you would like to edit
-DECK = 'Yomichan'
+DECK = 'MyDeckName'
 
 ## Mapping of the four Janki search esult fields fields in your Anki DECK.
 # Replace each 'ANKIFIELD' with the actual field name.
@@ -49,13 +49,12 @@ def setup(configpath):
             print('You can also choose to overwrite the file with a template if you are very lost.')
             action = dinput('\nDo you want to overwrite the existing config with the template?', default='n', choices=['y','n'])
             if action == 'y':
-                make_config()
+                make_config(configpath)
     else:
-        make_config()
+        make_config(configpath)
 
-def make_config():
-    cfgpath = opj(jpath[0],'config')
-    with open(cfgpath, 'w') as f:
+def make_config(configpath):
+    with open(configpath, 'w') as f:
         print(TEMPLATE, file=f)
-    print(f'Config template successfully written to {cfgpath}.')
+    print(f'Config template successfully written to {configpath}.')
     print('Make sure the variables are making sense before proceeding!')
