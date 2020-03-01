@@ -26,10 +26,10 @@ def readconfig(fpath=None, verbose=True, _test=False):
                 s = f'An exception occurred while reading the config in {fpath}:'
                 print(s)
                 print(len(s)*'=')
-                traceback.print_exc()
+                traceback.print_exc(chain=False)
                 print(len(s)*'=')
                 print('This probably indicates an error in your config file.')
-            raise ConfigError
+            raise
 
     return exec_locals
 
@@ -72,4 +72,4 @@ def _checks(exec_locals):
     for k in exec_locals['FIELDS'].keys():
         if k not in fields:
             jstr = '\n'.join(fields)
-            raise ConfigError(f"The FIELD '{k}' is unknown to your selected deck. Available FIELDs with this deck are:\n\n{jstr}\n")
+            raise ConfigError(f"\n\nThe FIELD '{k}' is unknown to your selected deck. Available FIELDs with this deck are:\n\n{jstr}\n")
