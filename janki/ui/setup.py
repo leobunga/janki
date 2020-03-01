@@ -1,5 +1,5 @@
 import os
-from os.path import join as opj, abspath, dirname as opd
+from os.path import join as opj, abspath
 from  .userinput   import dinput
 from ..core.config import checkconfig
 from ..            import __path__ as jpath
@@ -54,7 +54,7 @@ def setup(configpath):
         make_config()
 
 def make_config():
-    cfgpath = opj(opd(jpath[0]),'config')
+    cfgpath = opj(jpath[0],'config')
     with open(cfgpath, 'w') as f:
         print(TEMPLATE, file=f)
     print(f'Config template successfully written to {cfgpath}.')

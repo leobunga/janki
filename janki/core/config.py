@@ -1,14 +1,14 @@
 import traceback
 import os, sys
-from os.path import join    as opj
-from os.path import dirname as opd
+from os.path import join as opj
 from ..common.exceptions import ConfigError
+from ..                  import __path__ as jpath
 
 def readconfig(fpath=None, verbose=True, _test=False):
     # Return the locals() of the executed code from `fpath`, thanks to Robert
 
     if not fpath:
-        fpath = opj( opd(opd(opd(__file__))), 'config' )
+        fpath = opj( jpath[0], 'config' )
     if not os.path.isfile(fpath):
         raise ConfigError(f'\n\nNo config found in: `{fpath}`')
 

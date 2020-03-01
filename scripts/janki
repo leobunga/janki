@@ -8,7 +8,7 @@ from janki.common.clear      import clear
 
 from argparse import ArgumentParser
 import os, sys
-from os.path import join as opj, dirname as opd
+from os.path import join as opj
 
 parser = ArgumentParser(description='Janki main script')
 parser.add_argument('action', nargs='?', choices=[None, 'setup'], default=None, help='Main janki action.')
@@ -42,4 +42,4 @@ if args.action == None:
         clear()
         sys.exit()
 elif args.action == 'setup':
-    setup(opj(opd(jpath[0]), 'config'))
+    setup(opj(jpath[0], 'config'))
