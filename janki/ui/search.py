@@ -1,9 +1,9 @@
 import os,sys
 from os.path import join as opj, abspath
-from  .userinput   import dinput
-from ..common.vars import DIR, clear
-from ..core.jisho  import *
-from ..core.deck   import DECK
+from  .userinput    import dinput
+from ..common.clear import clear
+from ..core.jisho   import *
+from ..core.deck    import DECK
 
 
 def search():

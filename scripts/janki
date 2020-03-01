@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
-from janki import __path__ as jpath
+from janki import __path__ as jpath, __version__
 from janki.common.exceptions import *
 from janki.ui.setup          import setup
 from janki.ui.userinput      import dinput
-from janki.common.vars       import DIR, clear
+from janki.common.clear      import clear
 
 from argparse import ArgumentParser
 import os, sys
-from os.path import join as opj, dirname as opd, abspath
+from os.path import join as opj, dirname as opd
 
 parser = ArgumentParser(description='Janki main script')
 parser.add_argument('action', nargs='?', choices=[None, 'setup'], default=None, help='Main janki action.')
@@ -16,7 +16,8 @@ args = parser.parse_args()
 
 def mainscreen():
     clear()
-    print(f"{16*'*'}\nWelcome to Janki \n{16*'*'}\n")
+    print(f"{16*'*'}\nWelcome to Janki\n{16*'*'}\n")
+    print(f"Version:         {__version__}")
     print(f"Install path:    {jpath[0]}")
     from janki.core.config import readconfig
     try:
@@ -41,4 +42,4 @@ if args.action == None:
         clear()
         sys.exit()
 elif args.action == 'setup':
-    setup(opj(DIR, 'config'))
+    setup(opj(opd(jpath[0]), 'config'))

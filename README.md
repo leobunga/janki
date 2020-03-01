@@ -8,12 +8,9 @@ The aim of this package is to reduce user input to a minimum: After linking the 
 
 
 ## Installation
-
 1. `git clone git@github.com:leobunga/janki.git janki && cd janki`
 2. `pip install -e .`
-
-### Running the unit tests
-3. `pytest`
+3. To run the unit tests: `pytest`
 
 
 ## Setting Up

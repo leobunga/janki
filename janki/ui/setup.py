@@ -1,8 +1,8 @@
 import os
-from os.path import join as opj, abspath
+from os.path import join as opj, abspath, dirname as opd
 from  .userinput   import dinput
 from ..core.config import checkconfig
-from ..common.vars import DIR
+from ..            import __path__ as jpath
 
 TEMPLATE = """
 ## Path to your anki folder (https://github.com/dae/anki):
@@ -54,7 +54,7 @@ def setup(configpath):
         make_config()
 
 def make_config():
-    cfgpath = opj(DIR,'config')
+    cfgpath = opj(opd(jpath[0]),'config')
     with open(cfgpath, 'w') as f:
         print(TEMPLATE, file=f)
     print(f'Config template successfully written to {cfgpath}.')

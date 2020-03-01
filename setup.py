@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 from os import sep
 from os.path import join as opj
+from janki import __version__
 
 # TODO ask for path to config at install
 
@@ -14,7 +15,7 @@ The aim of this package is to reduce user input to a minimum.
 
 setup(
     name             = 'janki',
-    version          = '0.1',
+    version          = __version__,
     author           = 'Leo Komissarov',
     author_email     = 'koimssarov@scm.com',
     url              = 'https://github.com/leobunga/janki',
