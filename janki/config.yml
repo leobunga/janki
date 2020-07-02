@@ -1,0 +1,9 @@
+outfile: ~/Documents/janki_collection.txt
+separator: ", "
+linebreak: "\n"
+fields:
+  - Kanji
+  - Reading
+  - Meaning
+this_is: too
+this: 1

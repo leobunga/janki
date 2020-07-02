@@ -1,20 +1,13 @@
 #!/usr/bin/env python
 
-from janki import __path__ as jpath, __version__
-from janki.common.exceptions import *
-from janki.ui.setup          import setup
-from janki.ui.userinput      import dinput
-from janki.common.term       import *
+from janki import __path__ as __jpath, __version__
+from janki.exceptions import *
+from janki.ui         import *
+from janki.config     import readconfig
 
 from argparse import ArgumentParser
 import os, sys
 from os.path import join as opj
-
-_def_cfgpath = opj(jpath[0], 'config')
-parser = ArgumentParser(description='Janki main script')
-parser.add_argument('-c', '--config', default=_def_cfgpath, help=f'Path to the config file to use.\nDefaults to: {_def_cfgpath}')
-parser.add_argument('--reset', action='store_true', default=False, help=f'Overwrite the config file in `--config` with the default template.')
-args = parser.parse_args()
 
 def mainscreen():
     clear()
@@ -25,25 +18,16 @@ def mainscreen():
     print(f"Install path:    {jpath[0]}")
     print(f"Config path:     {args.config}")
 
-    if os.path.isfile(args.config) and args.reset == True:
-        print(C.str('\nResetting config', 'WARNING'))
-        os.remove(args.config)
-    from janki.core.config import readconfig
-    try:
-        global config
-        config = readconfig(args.config, verbose=False)
-        print(f"Collection path: {config['COLPATH']}")
-        print(f"Selected deck:   {config['DECK']}\n")
-        print('Actions: (s)earch, (q)uit')
-    except ConfigError:
-        if os.path.isfile(args.config):
-            print(C.str("\nCould not read the config, running setup helper:\n", 'WARNING'))
-        setup(args.config)
-        sys.exit(1)
+parser = ArgumentParser(description='Janki main script')
+parser.add_argument('-c', '--config', default=opj(__jpath[0], 'config.yml'), help=f"Path to the config file. Defaults to {opj(__jpath[0], 'config.yml')}")
+args = parser.parse_args()
+
+print(readconfig(args.config))
+exit()
+
 
 mainscreen()
-
-action = dinput('What to do?', choices=['s','q'], default='s')
+action = dinput('What to do?', choices=['s', 'q'], default='s')
 if action == 's':
     from janki.ui.search import search
     search()

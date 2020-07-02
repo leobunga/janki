@@ -15,7 +15,7 @@ setup(
     name             = 'janki',
     version          = __version__,
     author           = 'Leo Komissarov',
-    author_email     = 'koimssarov@scm.com',
+    author_email     = 'komissarov@scm.com',
     url              = 'https://github.com/leobunga/janki',
     download_url     = 'https://github.com/leobunga/janki/archive/master.zip',
     license          = 'GPLv3+',
@@ -33,8 +33,8 @@ setup(
             'Natural Language :: Japanese',
     ],
     keywords         = ['jisho', 'anki', 'jisho.org', 'japanese', 'flashcards', 'vocabulary', 'foreign language'],
+    setup_requires   = ['pyyaml']
     python_requires  = '>=3.5',
-    tests_require    = ['pytest'],
     packages         = packages,
     package_dir      = {'janki' : 'janki'},
     package_data     = {'janki' : ['tests/*','tests/*/*']},

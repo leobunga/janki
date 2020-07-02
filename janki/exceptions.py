@@ -1,4 +1,4 @@
-from .term import C
+from .ui import C
 
 class JankiError(Exception):
     def __str__(self):
