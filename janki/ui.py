@@ -2,9 +2,11 @@ import os,sys
 import readline
 from os.path import join as opj, abspath
 from .jisho  import *
+from . import __path__ as __jpath, __version__
 
 def clear():
     os.system('clear') if 'linux' in sys.platform or 'darwin' in sys.platform else os.system('cls')
+
 
 class C:
     # Colour a string that will be printed to term
@@ -22,6 +24,7 @@ class C:
         for c in colors:
             assert hasattr(C, c), f"No such color: {c}"
         return f"{''.join(getattr(C,c) for c in colors)}{string}{C.END}"
+
 
 def dinput(string, default=None, choices=None, quitbutton='q'):
     """
@@ -56,27 +59,38 @@ def dinput(string, default=None, choices=None, quitbutton='q'):
         ret = dinput(string, default, choices, quitbutton)
     return ret
 
-def search():
+
+def header():
+    clear()
+    s = f'Janki v{__version__}'
+    print(f"{len(s)*'*'}")
+    print(C.str(s, 'BOLD'))
+    print(f"{len(s)*'*'}")
+    print(f"Install path: {__jpath[0]}\n")
+
+def search(config):
     def cp(req,id):
         # clear and print
-        clear()
+        # clear()
         print(f'Search result {id+1:02d}/10')
         jprint(req[id])
         print('Actions: (a)dd, (n)ext, (p)revious, new (s)earch, (q)uit')
         return dinput('Enter action', choices=['a','n','p','s'])
 
+    header()
     req = dinput('Enter search string (q to quit)')
     if not req:
         clear()
         sys.exit()
     ret = jsearch(req)
     if not ret:
-        clear()
+        header()
         print(f'No search results for: {req}')
-        search()
+        search(config)
     id  = 0
     action = cp(ret, id)
     while action == 'n' or action == 'p': # Next / Previous
+        header()
         if action == 'n':
             id += 1 if id < 9 else 0
             action = cp(ret, id)
@@ -85,10 +99,10 @@ def search():
             action = cp(ret, id)
     if action == 's':
         clear()
-        search()
+        header()
+        search(config)
     elif action == 'a':
-        ret[id]
-        print('Added')
-        search()
+        print(ret[id])
+        search(config)
     elif action == None:
         clear()

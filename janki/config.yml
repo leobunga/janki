@@ -1,9 +1,9 @@
 outfile: ~/Documents/janki_collection.txt
 separator: ", "
-linebreak: "\n"
+per_field_separator: "; "
 fields:
   - Kanji
   - Reading
   - Meaning
-this_is: too
-this: 1
+  - Parts of speech
+  - Tags

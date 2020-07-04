@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from janki import __path__ as __jpath, __version__
+from janki import __path__ as __jpath
 from janki.exceptions import *
 from janki.ui         import *
 from janki.config     import readconfig
@@ -9,28 +9,16 @@ from argparse import ArgumentParser
 import os, sys
 from os.path import join as opj
 
-def mainscreen():
-    clear()
-    print(f"{16*'*'}")
-    print(C.str('Welcome to Janki', 'BOLD'))
-    print(f"{16*'*'}\n")
-    print(f"Version:         {__version__}")
-    print(f"Install path:    {jpath[0]}")
-    print(f"Config path:     {args.config}")
-
 parser = ArgumentParser(description='Janki main script')
-parser.add_argument('-c', '--config', default=opj(__jpath[0], 'config.yml'), help=f"Path to the config file. Defaults to {opj(__jpath[0], 'config.yml')}")
+parser.add_argument('action', nargs='?', default=None, choices=[None, 'setup'], help="Call `janki setup` for the setup helper. Calling without arguments will will start the search dialogue.")
+parser.add_argument('-c', '--config',    default=opj(__jpath[0], 'config.yml'), help=f"Path to the config file. Defaults to {opj(__jpath[0], 'config.yml')}")
+parser.add_argument('-o', '--out',       default=None,                          help=f"Path to the output file. Defaults to the path defined in the 'config.yml'.")
 args = parser.parse_args()
 
-print(readconfig(args.config))
-exit()
+config = readconfig(args.config)
 
-
-mainscreen()
-action = dinput('What to do?', choices=['s', 'q'], default='s')
-if action == 's':
-    from janki.ui.search import search
-    search()
+if args.action is None:
+    search(config)
 elif not action:
     clear()
     sys.exit()
