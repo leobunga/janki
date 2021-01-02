@@ -1,3 +1,5 @@
+# This repository is deprecated: Use the [Yomichan](https://foosoft.net/projects/yomichan/) addon in combination with Anki instead
+
 # Janki
 
 Search [Jisho.org](https://jisho.org/) for vocabulary and add it to your [Anki](https://apps.ankiweb.net) collection with the press of a button (maybe two presses).
